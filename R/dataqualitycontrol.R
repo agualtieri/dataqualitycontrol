@@ -25,6 +25,7 @@
 #' The long format, although larger and less easily readable, will allow partners or the person responsible for data cleaning th ability to select
 #' which of the variable in question needs to be corrected.
 #'
+#'
 #' @docType package
 #' @name dataqualitycontrol
 #'

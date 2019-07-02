@@ -4,19 +4,19 @@
 \alias{run_checks_from_dataframe}
 \title{Run predefined quality check test on a raw dataset}
 \usage{
-run_checks_from_dataframe(data, conditions_dataframe, condition.column,
+run_checks_from_dataframe(df, conditions_df, condition.column,
   test.name.column, meta_to_keep = c())
 }
 \arguments{
-\item{data}{the dataset you wish to check for invalid combinations of variables}
+\item{df}{the dataset you wish to check for invalid combinations of variables}
+
+\item{conditions_df}{the dataframe contaning the name of the checks and the list of controls to perform}
 
 \item{condition.column}{the column name that containes the conditions you want to check in the dataset}
 
 \item{test.name.column}{the column name that contains the description of the checks you want to perform}
 
 \item{meta_to_keep}{a list of metadata you wish to include in the final output}
-
-\item{condition_dataframe}{the dataframe contaning the name of the checks and the list of controls to perform}
 }
 \value{
 Standardized issues table for quality check in long format.
@@ -29,13 +29,8 @@ using the supplied condition_list.
 The condition_list must be a dataframe containingat least two variables: condition as the name of the condition one wishes to check
 and test as the test applied to each condition.
 }
-\examples{
-run_checks_from_dataframe()
-
-
-}
 \references{
-\url{https://github.com/agualtieri/mcla_cleaneR}
+\url{https://github.com/agualtieri/dataqualitycontrol}
 }
 \author{
 Alberto Gualtieri, \email{alberto.gualtieri@reach-initiative.org}

@@ -1,6 +1,6 @@
 Package: dataqualitycontrol
 Type: Package
-Title: Data quality check from 
+Title: Data quality check
 Version: 0.1.0
 Author: Alberto Gualtieri
 Maintainer: Alberto Gualtieri <alberto.gualtieri@reach-initiative.org>

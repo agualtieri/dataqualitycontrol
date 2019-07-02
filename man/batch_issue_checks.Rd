@@ -4,16 +4,16 @@
 \alias{batch_issue_checks}
 \title{Batch check of predefined data quality conditions}
 \usage{
-batch_issue_checks(data, conditions, tests, meta_to_keep = c())
+batch_issue_checks(df, conditions, tests, meta_to_keep = c())
 }
 \arguments{
-\item{data}{the dataset you wish to check for invalid combinations of variables}
+\item{df}{the dataframe you wish to check for invalid combinations of variables}
+
+\item{conditions}{the set of conditions you wish to check}
 
 \item{tests}{the set of test related to each condition}
 
 \item{meta_to_keep}{a list of metadata you wish to include in the final output}
-
-\item{condition}{the set of condition you wish to check}
 }
 \value{
 Standardized issues table for quality check in long format.
@@ -22,11 +22,8 @@ Standardized issues table for quality check in long format.
 The following function checks for the presence of invalid combinations of variables within the
 supplied data and produced and editable output that can be used for data quality review.
 }
-\examples{
-batch_issue_checks()
-}
 \references{
-\url{https://github.com/agualtieri/mcla_cleaneR}
+\url{https://github.com/agualtieri/dataqualitycontrol}
 }
 \author{
 Alberto Gualtieri, \email{alberto.gualtieri@reach-initiative.org}

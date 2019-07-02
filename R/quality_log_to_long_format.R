@@ -11,12 +11,10 @@
 #'
 #'
 #' @author Alberto Gualtieri, \email{alberto.gualtieri@@reach-initiative.org}
-#' @references \url{https://github.com/agualtieri/mcla_cleaneR}
+#' @references \url{https://github.com/agualtieri/dataqualitycontrol}
 #' @keywords yemen, mcla, quality check, platypus
 #'
 #'
-#' @examples
-#' quality_checks_log_to_long_format()
 #'
 #' @export
 

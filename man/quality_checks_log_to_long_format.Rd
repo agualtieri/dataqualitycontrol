@@ -22,12 +22,8 @@ A transformed quality check log
 \description{
 The following function turns the quality check output from wide to long format.
 }
-\examples{
-quality_checks_log_to_long_format()
-
-}
 \references{
-\url{https://github.com/agualtieri/mcla_cleaneR}
+\url{https://github.com/agualtieri/dataqualitycontrol}
 }
 \author{
 Alberto Gualtieri, \email{alberto.gualtieri@reach-initiative.org}
