@@ -17,14 +17,12 @@
 #'
 #'
 #' @export
-
-
 quality_checks_log_to_long_format <- function(data, variable_name = "variable" , value_name = "value", meta_not_to_transform = c()){
 
   assertthat::assert_that(is.data.frame(data))
   assertthat::assert_that(is.character(variable_name))
   assertthat::assert_that(is.character(value_name))
-  assertthat::assert_that(is.vector(meta_not_to_transform))
+  if(length(meta_not_to_transform>0)){assertthat::assert_that(is.vector(meta_not_to_transform))}
 
 
   ## reshape data into long format using melt
