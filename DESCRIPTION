@@ -7,6 +7,11 @@ Maintainer: Alberto Gualtieri <alberto.gualtieri@reach-initiative.org>
 Description: Data quality control according to a predefined list of data quality checks submited by the user and
              produces outputs that allow for a straighforward visualsation and mapping of data entry errors.
              Requires IMPACT "composer" and "koboquest".
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
 Depends:
       R (>= 3.0.0),
 Imports:
@@ -29,11 +34,6 @@ Remotes:
     github::mabafaba/koboquest,
     github::mabafaba/kobostandards,,
     github::mabafaba/composr,
-License: GPL-3
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
 Suggests:
       testthat,
       rmarkdown,
