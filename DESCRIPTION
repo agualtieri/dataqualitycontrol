@@ -32,7 +32,7 @@ Imports:
     tibble
 Remotes:
     github::mabafaba/koboquest,
-    github::mabafaba/kobostandards,,
+    github::mabafaba/kobostandards,
     github::mabafaba/composr,
 Suggests:
       testthat,
