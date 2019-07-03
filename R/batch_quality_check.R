@@ -24,19 +24,19 @@ batch_issue_checks <- function(df, conditions, tests, meta_to_keep = c()){
   assertthat::assert_that(is.data.frame(df))
   assertthat::assert_that(is.character(conditions))
   assertthat::assert_that(is.character(tests))
-  assertthat::assert_that(is.vector(meta_to_keep))
+  if(length(meta_to_keep>0)){assertthat::assert_that(is.vector(meta_to_keep))}
 
 
   data_with_issues <- composr::recode_batch(df, tos = rep(1,length(conditions)),
                                             wheres = conditions,
-                                            targets = tests) %>% composr::end_recoding
+                                            targets = tests) %>% (composr::end_recoding)
 
 
   unique_targets <- unique(tests)
 
   data_with_issues[, unique_targets] <- lapply(data_with_issues[, unique_targets], function(x){
     x[is.na(x)] <-0
-    x }) %>% tibble::as_tibble
+    x }) %>% (tibble::as_tibble)
 
   data_with_issues %>% dplyr::select(c(meta_to_keep, unique_targets))
 
@@ -74,7 +74,7 @@ run_checks_from_dataframe<-function(df, conditions_df, condition.column, test.na
   assertthat::assert_that(is.data.frame(conditions_df))
   assertthat::assert_that(is.vector(condition.column))
   assertthat::assert_that(is.vector(test.name.column))
-  assertthat::assert_that(is.vector(meta_to_keep))
+  if(length(meta_to_keep>0)){assertthat::assert_that(is.vector(meta_to_keep))}
 
   if(!(condition.column%in% names(conditions_df))){stop(paste(condition.column, " not a column name in conditions_df"))}
   if(!(test.name.column %in% names(conditions_df))){stop(paste(test.name.column, " not a column name in conditions_df"))}
