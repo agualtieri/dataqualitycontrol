@@ -31,7 +31,7 @@ quality_checks_log_to_long_format <- function(data, variable_name = "variable" ,
   assertthat::assert_that(is.data.frame(data_long))
 
   ## remove all zeros
-  data_long[apply(data_long != 0, 1, all),]
+  data_long_nozero <- data_long[apply(data_long != 0, 1, all),]
 
-  data_long
+  data_long_nozero
 }
