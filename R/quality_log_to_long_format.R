@@ -17,6 +17,7 @@
 #'
 #'
 #' @export
+#'
 quality_checks_log_to_long_format <- function(data, variable_name = "variable" , value_name = "value", meta_not_to_transform = c()){
 
   assertthat::assert_that(is.data.frame(data))
