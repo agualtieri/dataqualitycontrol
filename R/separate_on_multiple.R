@@ -15,13 +15,11 @@
 #' @references \url{https://github.com/agualtieri/dataqualitycontrol}
 #' @keywords yemen, mcla, quality check, platypus
 #'
-#'
-#'
 #' @export
-#'
 
 
-reformat_quality_checks <- function(data, var_to_separate, sep1, sep2 = NULL, sep3 = NULL){
+
+separate_on_multiple <- function(data, var_to_separate, sep1, sep2 = NULL, sep3 = NULL){
 
   assertthat::assert_that(is.data.frame(data))
   assertthat::assert_that(is.character(var_to_separate))
