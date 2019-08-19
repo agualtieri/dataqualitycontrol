@@ -3,12 +3,12 @@
 #' The following function helps you in separating a variable into two column using up to three separators
 #'
 #' @param data the dataset containing the variable that needs to be separated
-#' @param var_to_separrate the variable that needs to be separated
+#' @param var_to_separate the variable that needs to be separated
 #' @param sep1 the first separator included in the variable that needs to be separated
 #' @param sep2 the second separator included in the variable that needs to be separated (default is NULL)
 #' @param sep3 the third separator included in the variable that needs to be separated (defaul is NULL)
 #'
-#' @return the @var_to_separate will be divided into two column based on the included separators
+#' @return the @param var_to_separate will be divided into two column based on the included separators
 #'
 #'
 #' @author Alberto Gualtieri, \email{alberto.gualtieri@@reach-initiative.org}
