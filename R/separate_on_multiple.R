@@ -24,8 +24,7 @@ separate_on_multiple <- function(data, var_to_separate, sep1, sep2 = NULL, sep3 
   assertthat::assert_that(is.data.frame(data))
   assertthat::assert_that(is.character(var_to_separate))
   assertthat::assert_that(is.character(sep1))
-  assertthat::assert_that(is.character(sep2))
-  assertthat::assert_that(is.character(sep3))
+
 
 
   x <- splitstackshape::cSplit(data, var_to_separate, sep = sep1, "long")
