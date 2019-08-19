@@ -29,7 +29,8 @@ Imports:
     magrittr,
     tidyr,
     crayon,
-    tibble
+    tibble,
+    splitstackshape
 Remotes:
     github::mabafaba/koboquest,
     github::mabafaba/kobostandards,
