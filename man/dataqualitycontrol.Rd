@@ -6,9 +6,11 @@
 \alias{dataqualitycontrol-package}
 \title{dataqualitycontrol: A package to produce standardized data quality output}
 \description{
-The data quality control package provides two categories of functions:
+The data quality control package provides four functions:
 \itemize{
 \item batch quality checks
 \item quality log to long format
+\item dataframe anonymiser
+\item separate on multiple separators
 }
 }

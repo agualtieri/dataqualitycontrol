@@ -1,8 +1,10 @@
 #' dataqualitycontrol: A package to produce standardized data quality output
 #'
-#' The data quality control package provides two categories of functions:
+#' The data quality control package provides four functions:
 #' - batch quality checks
 #' - quality log to long format
+#' - dataframe anonymiser
+#' - separate on multiple separators
 #'
 #' @section Batch quality checks function
 #' The "Batch quality checks" function funs the list of quality checks the user provides through the dataframe that needs to be reviewed
@@ -28,6 +30,5 @@
 #'
 #' @docType package
 #' @name dataqualitycontrol
-#'
 
 NULL
