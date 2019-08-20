@@ -1,0 +1,199 @@
+---
+title: "Quickstart tutorial"
+author: "Alberto Gualtieri"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+## Pretext
+The dataqualitycontrol package helps the user in performing data quality checks within a dataset
+
+
+## What you need:
+get all your files in csv format first:
+
+  - your data as a csv file
+  - your kobo questionnare choices as a csv file
+  - your kobo questionnare questions as a csv file
+  - the list of quality conditions you want to check for
+
+
+
+
+> _**IMPORTANT NOTE:**_ your data and questionnaire must adhere to the standard xml style output from kobo otherwise this will either not work or produce wrong results.
+>
+> - column headers unchanged
+> - questionnaire names unchanged
+> - xml values (NOT labeled)
+> - select_multiple questions have one column with all responses concatenated (separated by blank space " "), and one column for each response named [question name].[choice name]
+>
+
+
+## Preparation
+### Install the dataqualitycontrol package
+This line you only have to run _once_ when using dataqualitycontrol for the first time, or to update to a new version.
+```{r,eval=F}
+remotes::install_github("agualtieri/dataqualitycontrol", build_opts = c())
+```
+(the `build_opts = c()` makes sure the package includes all extra help pages & documentation)
+For this step only, you need a more or less stable internet connection.
+
+If while installing R asks you to update certain packages, select "None" and continue the installation process. If the installation process fails, feel free to contact us at: alberto.gualtieri@reach-initiative.org
+
+### Load the dataqualitycontrol package
+```{r,warning=FALSE,message=FALSE}
+library("dataqualitycontrol")
+```
+
+### Load your files
+Before loading your data this is the list of libraries that are required to run a data quality check process:
+
+```{r,eval=F}
+library("tidyverse")
+library("readr")
+
+```
+
+#### The data
+`read.csv` takes two argumenta `file` which is the path to the csv file and `stringAsFactors` which is set up as _FALSE_
+
+```r
+assessment_data <- read.csv("./tests/test_dataset.csv", stringsAsFactors = F)
+
+```
+Conditions:
+
+- it must adhere to standard kobo xml format
+- it must _not_ contain labeled values
+- it must have a _single_ row for column headers (unchanged as they come out of kobo)
+- it may contain additional columns that were not in the original questionnaire. It is good practice to additional new variables as additional rows to the questionnaire, specifying variable type, choices etc.
+
+
+#### The Questionnaire
+The questionnaire depends on the question and the choices sheet as a csv.
+
+```r
+questions <- read.csv("./test/questionnaire_questions.csv", stringsAsFactors = F)
+choices <- read.csv("./test/questionnaire_choices.csv", stringsAsFactors = F)
+
+```
+Conditions:
+
+- Both the choices and questions csv files should be exact copies of the respective sheets in the kobo xml form (except for the additions mentioned above.)
+
+#### The Conditions List file
+The conditions list file has to be prepared by the user and must contain two columns:
+
+- quality check names: which is the description of the quality check performed, i.e: Invalid combination between C9_DisplacementStatus (short term mouvement intentions) & C10_DisplacmentStatus (long term mouvement intentions).
+- quality check code: which is the combination of the Kobo questionnaire choices that the user want to validate, i.e: C9_DisplacementStatus == "c9_10_1" & C10_DisplacementStatus == "c9_10_2" 
+
+```r
+conditions_list <- read.csv("./test/conditions_list.csv", stringsAsFactors = F)
+
+```
+
+### Running the data quality list on the assessment data frame
+
+#### Step 1: produce a cleaning log
+
+The first step is to produce a simple cleaning loq showing how many times each data quality issue appears in the dataset. 
+You do that using the `run_checks_from_dataframe` function which requires four arguments:
+
+  - `df`: the assessment dataframe
+  - `conditions_df`: the list of conditions
+  - `condition.colum`: the column in the conditions list including the quality check codes
+  - `test.name.column`: the column in the conditions list including the quality check names
+  - `meta_to_keep`: the vector of variable you want to included in the final cleaning log
+
+```r
+cleaning_log <- run_checks_from_dataframe(df = assessment_data,
+                                          conditions_df = conditions_list,
+                                          condition.column = "conditions",
+                                          test.name.column = "check_names",
+                                          meta_to_keep = c("uuid", "A1_Metadata", "A2_Metadata", "A3_Metadata"))
+
+```
+
+
+#### Step 2: Transforming the cleaning log
+
+The cleaning log produyced with `run_checks_from_dataframe` is useful to have an overview of how many times a quality issues presents itself overall in the assessment dataset but does not help with the data cleaning. To produce a more useful data cleaning log we need to transpose the initial cleaning log divide each quality checks into one row per variable. This process requires three intermediate steps. 
+
+##### Step 2.1: Transposing the intial cleaning log into a one row per check format (essentially by melting the initial data cleaning log). 
+
+You can do so with the `quality_checks_log_to_long_format` function. This function takes in two factors:
+
+  - `data`: the initial cleaning log dataset
+  - `meta_not_to_transform`: the matadata you want to keep in wide format
+
+
+```r
+cleaning_log_melt <- quality_checks_log_to_long_format(data = cleaning_log,
+                                                       meta_not_to_transform = c("uuid", "A1_Metadata", "A2_Metadata", "A3_Metadata"))
+
+
+```
+
+##### Step 2.2: Adding quality check names to the transposed cleaning log
+
+For the final version fo the cleanign log, it would be useful to have the quality check names into the dataframe. To join the them from the condition list dataframe we need to do a number of operations.
+
+```r
+## Add quality checks to dataframe
+cleaning_log_melt$quality_checks <- conditions_list$conditions[match(cleaning_log_melt$variable, conditions_list$check_names)]
+
+## Rename column variable and delete the value column
+clog_separated <- reshape::rename(cleaning_log_melt, c(variable = "description"))
+clog_separated$value <- NULL
+
+
+```
+
+##### Step 2.3: Split each row into one row per variable
+
+Since each quality check is made of one ore multiple individual variable checked against each other we need to separate them into a one row per variable format so that we are able to identify which variable will need to be cleaned. 
+
+To reformat the cleaning log you can use the `separate_on_multiple` function that takes in the following arguments:
+
+  - `data`: the separated cleaning log created before using the `quality_checks_log_to_long_format` with the conditions names added
+  - `var_to_separate`: the column you want to separate into a one row per variable format
+  - `sep1`: the first separator character
+  - `sep2`: if present, the second separator character
+  - `sep3`: of present, the third separator characger
+
+
+```r
+## Separate reformatted quality checks into three variable to allow for easier data cleaning
+clog_reformatted <- separate_on_multiple(clog_separated, "quality_checks", sep1 = "&", sep2 = "|")
+
+## Create an "old value" variable by splitting the "quality checks" column
+clog_reformatted$qchecks_sep <- as_tibble(str_replace_all(clog_reformatted$quality_checks, "[= | !=]", " "))
+var_split <- str_split_fixed(clog_reformatted$qchecks_sep, " ", 2)
+
+cleaning_log_final <- cbind(clog_reformatted, var_split)
+cleaning_log_final <- reshape::rename(cleaning_log_final, c(V1 = "variable_name", V2 = "old_value"))
+
+## Add a "new value" colimn
+cleaning_log_final$new_value <- NA
+
+## Delete unnecessary columns
+cleaning_log_final$quality_checks <- NULL
+cleaning_log_final$qchecks_sep <- NULL
+
+# Clean the "old values" codes from quotes
+cleaning_log_final$old_value<- gsub("\"", "", cleaning_log_final$old_value)
+cleaning_log_final$old_value <- gsub("\ ", "", cleaning_log_final$old_value)
+
+
+```
+
