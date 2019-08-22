@@ -68,7 +68,7 @@ library("readr")
 `read.csv` takes two argumenta `file` which is the path to the csv file and `stringAsFactors` which is set up as _FALSE_
 
 ```r
-assessment_data <- read.csv("./tests/test_dataset.csv", stringsAsFactors = F)
+assessment_data <- read.csv("./vignettes/example/test_dataset.csv", stringsAsFactors = F)
 
 ```
 Conditions:
@@ -83,8 +83,8 @@ Conditions:
 The questionnaire depends on the question and the choices sheet as a csv.
 
 ```r
-questions <- read.csv("./test/questionnaire_questions.csv", stringsAsFactors = F)
-choices <- read.csv("./test/questionnaire_choices.csv", stringsAsFactors = F)
+questions <- read.csv("./vignettes/example/questionnaire_questions.csv", stringsAsFactors = F)
+choices <- read.csv("./vignettes/example/questionnaire_choices.csv", stringsAsFactors = F)
 
 ```
 Conditions:
@@ -98,7 +98,7 @@ The conditions list file has to be prepared by the user and must contain two col
 - quality check code: which is the combination of the Kobo questionnaire choices that the user want to validate, i.e: C9_DisplacementStatus == "c9_10_1" & C10_DisplacementStatus == "c9_10_2" 
 
 ```r
-conditions_list <- read.csv("./test/conditions_list.csv", stringsAsFactors = F)
+conditions_list <- read.csv("./vignettes/example/conditions_list.csv", stringsAsFactors = F)
 
 ```
 
