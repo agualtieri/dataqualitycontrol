@@ -4,8 +4,9 @@
 #' supplied data and produced and editable output that can be used for data quality review.
 #'
 #' @param df the dataframe you wish to check for invalid combinations of variables
-#' @param conditions the set of conditions you wish to check
-#' @param tests the set of test related to each condition
+#' @param conditions a string, the set of conditions you wish to check (as R code)
+#' @param tests a string, the set of tests related to each condition (as text, detailing the issue)
+#' @param variables (optional) a string, the name of the variable affected by the check (for an output compatible with your cleaning log)
 #' @param meta_to_keep a list of metadata you wish to include in the final output
 #'
 #' @return Standardized issues table for quality check in long format.
@@ -17,17 +18,17 @@
 #'
 #'
 #' @export
-
-
-batch_issue_checks <- function(df, conditions, tests, meta_to_keep = c()){
+batch_issue_checks <- function(df, conditions, tests, meta_to_keep = c(), variables = NULL){
 
   assertthat::assert_that(is.data.frame(df))
   assertthat::assert_that(is.character(conditions))
   assertthat::assert_that(is.character(tests))
   if(length(meta_to_keep>0)){assertthat::assert_that(is.vector(meta_to_keep))}
+  if(is.null(variables)){variables <- rep(1, length(conditions))
+  } else {
+    assertthat::assert_that(is.character(variables))}
 
-
-  data_with_issues <- composr::recode_batch(df, tos = rep(1,length(conditions)),
+  data_with_issues <- composr::recode_batch(df, tos = variables,
                                             wheres = conditions,
                                             targets = tests) %>% (composr::end_recoding)
 
